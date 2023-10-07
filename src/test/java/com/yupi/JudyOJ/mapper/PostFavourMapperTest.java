@@ -1,9 +1,10 @@
 package com.yupi.JudyOJ.mapper;
 
+import com.JudyOJ.mapper.PostFavourMapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.yupi.JudyOJ.model.entity.Post;
+import com.JudyOJ.model.entity.Post;
 import javax.annotation.Resource;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

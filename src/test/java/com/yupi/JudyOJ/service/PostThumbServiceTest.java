@@ -1,7 +1,9 @@
 package com.yupi.JudyOJ.service;
 
-import com.yupi.JudyOJ.model.entity.User;
+import com.JudyOJ.model.entity.User;
 import javax.annotation.Resource;
+
+import com.JudyOJ.service.PostThumbService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

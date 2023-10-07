@@ -1,6 +1,6 @@
 package com.yupi.JudyOJ;
 
-import com.yupi.JudyOJ.config.WxOpenConfig;
+import com.JudyOJ.config.WxOpenConfig;
 import javax.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

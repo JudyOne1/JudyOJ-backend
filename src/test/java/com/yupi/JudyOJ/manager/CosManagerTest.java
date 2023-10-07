@@ -1,6 +1,8 @@
 package com.yupi.JudyOJ.manager;
 
 import javax.annotation.Resource;
+
+import com.JudyOJ.manager.CosManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

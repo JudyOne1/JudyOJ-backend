@@ -1,9 +1,10 @@
 package com.yupi.JudyOJ.esdao;
 
-import com.yupi.JudyOJ.model.dto.post.PostEsDTO;
-import com.yupi.JudyOJ.model.dto.post.PostQueryRequest;
-import com.yupi.JudyOJ.model.entity.Post;
-import com.yupi.JudyOJ.service.PostService;
+import com.JudyOJ.esdao.PostEsDao;
+import com.JudyOJ.model.dto.post.PostEsDTO;
+import com.JudyOJ.model.dto.post.PostQueryRequest;
+import com.JudyOJ.model.entity.Post;
+import com.JudyOJ.service.PostService;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;

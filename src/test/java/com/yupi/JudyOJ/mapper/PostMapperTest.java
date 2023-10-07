@@ -1,6 +1,7 @@
 package com.yupi.JudyOJ.mapper;
 
-import com.yupi.JudyOJ.model.entity.Post;
+import com.JudyOJ.mapper.PostMapper;
+import com.JudyOJ.model.entity.Post;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
