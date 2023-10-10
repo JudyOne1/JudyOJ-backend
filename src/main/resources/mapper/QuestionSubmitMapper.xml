@@ -6,21 +6,21 @@
 
     <resultMap id="BaseResultMap" type="com.JudyOJ.model.entity.QuestionSubmit">
             <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="language" column="language" jdbcType="VARCHAR"/>
+            <result property="code" column="code" jdbcType="VARCHAR"/>
+            <result property="judgeInfo" column="judgeInfo" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
             <result property="questionId" column="questionId" jdbcType="BIGINT"/>
             <result property="userId" column="userId" jdbcType="BIGINT"/>
-            <result property="judgeInfo" column="judgeInfo" jdbcType="VARCHAR"/>
-            <result property="submitLanguage" column="submitLanguage" jdbcType="VARCHAR"/>
-            <result property="submitCode" column="submitCode" jdbcType="VARCHAR"/>
-            <result property="submitState" column="submitState" jdbcType="INTEGER"/>
             <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
             <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,questionId,userId,
-        judgeInfo,submitLanguage,submitCode,
-        submitState,createTime,updateTime,
+        id,language,code,
+        judgeInfo,status,questionId,
+        userId,createTime,updateTime,
         isDelete
     </sql>
 </mapper>
