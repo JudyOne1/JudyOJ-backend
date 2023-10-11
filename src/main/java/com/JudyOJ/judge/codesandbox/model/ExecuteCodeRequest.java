@@ -1,4 +1,4 @@
-package com.JudyOJ.judge.model;
+package com.JudyOJ.judge.codesandbox.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

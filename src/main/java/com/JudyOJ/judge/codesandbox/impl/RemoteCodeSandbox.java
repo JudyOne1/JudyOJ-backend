@@ -1,8 +1,8 @@
 package com.JudyOJ.judge.codesandbox.impl;
 
 import com.JudyOJ.judge.codesandbox.CodeSandbox;
-import com.JudyOJ.judge.model.ExecuteCodeRequest;
-import com.JudyOJ.judge.model.ExecuteCodeResponse;
+import com.JudyOJ.judge.codesandbox.model.ExecuteCodeRequest;
+import com.JudyOJ.judge.codesandbox.model.ExecuteCodeResponse;
 
 /**
  * 远程代码沙箱（实际使用的代码沙箱）

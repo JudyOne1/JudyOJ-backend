@@ -1,4 +1,4 @@
-package com.JudyOJ.judge.model;
+package com.JudyOJ.judge.codesandbox.model;
 
 import com.JudyOJ.model.dto.questionsubmit.JudgeInfo;
 import lombok.AllArgsConstructor;
@@ -24,11 +24,11 @@ public class ExecuteCodeResponse {
     /**
      * 执行状态
      */
-    private String status;
+    private int status;
     /**
      * 输出结果
      */
-    private List<String> ouputList;
+    private List<String> OutputList;
     /**
      * 执行信息
      */
