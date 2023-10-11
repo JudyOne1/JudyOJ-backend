@@ -1,4 +1,4 @@
-package com.JudyOJ.judge;
+package com.JudyOJ.judge.codesandbox;
 
 import com.JudyOJ.judge.codesandbox.CodeSandbox;
 import com.JudyOJ.judge.codesandbox.impl.ExampleCodeSandbox;
@@ -19,7 +19,7 @@ public class CodeSandboxFactory {
      * @param type 沙箱字符串类别
      * @return
      */
-    public static CodeSandbox NewInstance(String type) {
+    public static CodeSandbox newInstance(String type) {
         switch (type) {
             case "example":
                 return new ExampleCodeSandbox();

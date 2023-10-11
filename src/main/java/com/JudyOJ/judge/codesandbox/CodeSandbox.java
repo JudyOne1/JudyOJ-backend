@@ -1,7 +1,7 @@
 package com.JudyOJ.judge.codesandbox;
 
-import com.JudyOJ.judge.model.ExecuteCodeRequest;
-import com.JudyOJ.judge.model.ExecuteCodeResponse;
+import com.JudyOJ.judge.codesandbox.model.ExecuteCodeRequest;
+import com.JudyOJ.judge.codesandbox.model.ExecuteCodeResponse;
 
 /**
  * @author Judy
