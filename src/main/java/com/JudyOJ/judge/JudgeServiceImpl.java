@@ -16,7 +16,10 @@ import com.JudyOJ.model.entity.QuestionSubmit;
 import com.JudyOJ.model.enums.QuestionSubmitStatusEnum;
 import com.JudyOJ.service.QuestionService;
 import com.JudyOJ.service.QuestionSubmitService;
+import org.checkerframework.checker.units.qual.A;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -32,8 +35,14 @@ public class JudgeServiceImpl implements JudgeService {
     @Resource
     private QuestionService questionService;
 
-    @Resource
+    //@Resource 循环依赖
     private QuestionSubmitService questionSubmitService;
+
+    @Autowired
+    @Lazy
+    public JudgeServiceImpl(QuestionSubmitService questionSubmitService) {
+        this.questionSubmitService = questionSubmitService;
+    }
 
     @Resource
     private JudgeManager judgeManager;

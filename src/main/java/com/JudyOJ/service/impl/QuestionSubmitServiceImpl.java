@@ -3,6 +3,7 @@ package com.JudyOJ.service.impl;
 import com.JudyOJ.common.ErrorCode;
 import com.JudyOJ.constant.CommonConstant;
 import com.JudyOJ.exception.BusinessException;
+import com.JudyOJ.judge.JudgeService;
 import com.JudyOJ.model.dto.questionsubmit.QuestionSubmitAddRequest;
 import com.JudyOJ.model.dto.questionsubmit.QuestionSubmitQueryRequest;
 import com.JudyOJ.model.entity.Question;
@@ -22,28 +23,39 @@ import com.JudyOJ.mapper.QuestionSubmitMapper;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 
 /**
-* @author Judy
-* @description 针对表【question_submit(题目提交)】的数据库操作Service实现
-* @createDate 2023-10-04 22:23:09
-*/
+ * @author Judy
+ * @description 针对表【question_submit(题目提交)】的数据库操作Service实现
+ * @createDate 2023-10-04 22:23:09
+ */
 @Service
 public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper, QuestionSubmit>
-    implements QuestionSubmitService{
+        implements QuestionSubmitService {
 
     @Resource
     private QuestionService questionService;
 
     @Resource
     private UserService userService;
+
+    //@Resource 循环依赖
+    private JudgeService judgeService;
+
+    @Autowired
+    @Lazy
+    public QuestionSubmitServiceImpl(JudgeService judgeService) {
+        this.judgeService = judgeService;
+    }
 
 
     /**
@@ -79,14 +91,14 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
         questionSubmit.setStatus(QuestionSubmitStatusEnum.WAITING.getValue());
         questionSubmit.setJudgeInfo("{}");
         boolean save = this.save(questionSubmit);
-        if (!save){
+        if (!save) {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "数据插入失败");
         }
         Long questionSubmitId = questionSubmit.getId();
-        // TODO 执行判题服务
-//        CompletableFuture.runAsync(() -> {
-//            JudgeService.doJudge(questionSubmitId);
-//        });
+        // 执行判题服务
+        CompletableFuture.runAsync(() -> {
+            judgeService.doJudge(questionSubmitId);
+        });
         return questionSubmitId;
     }
 
