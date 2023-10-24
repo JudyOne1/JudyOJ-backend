@@ -1,7 +1,7 @@
 package com.JudyOJ.judge.codesandbox.strategy;
 
 import com.JudyOJ.model.dto.question.JudgeCase;
-import com.JudyOJ.model.dto.questionsubmit.JudgeInfo;
+import com.JudyOJ.judge.codesandbox.model.JudgeInfo;
 import com.JudyOJ.model.entity.Question;
 import com.JudyOJ.model.entity.QuestionSubmit;
 import lombok.Data;

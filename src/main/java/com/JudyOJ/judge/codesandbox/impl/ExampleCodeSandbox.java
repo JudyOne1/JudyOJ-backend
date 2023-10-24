@@ -3,7 +3,7 @@ package com.JudyOJ.judge.codesandbox.impl;
 import com.JudyOJ.judge.codesandbox.CodeSandbox;
 import com.JudyOJ.judge.codesandbox.model.ExecuteCodeRequest;
 import com.JudyOJ.judge.codesandbox.model.ExecuteCodeResponse;
-import com.JudyOJ.model.dto.questionsubmit.JudgeInfo;
+import com.JudyOJ.judge.codesandbox.model.JudgeInfo;
 import com.JudyOJ.model.enums.JudgeInfoMessageEnum;
 import com.JudyOJ.model.enums.QuestionSubmitStatusEnum;
 

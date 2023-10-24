@@ -1,6 +1,6 @@
 package com.JudyOJ.judge.codesandbox.strategy;
 
-import com.JudyOJ.model.dto.questionsubmit.JudgeInfo;
+import com.JudyOJ.judge.codesandbox.model.JudgeInfo;
 
 /**
  * 策略模式  ——  判题策略

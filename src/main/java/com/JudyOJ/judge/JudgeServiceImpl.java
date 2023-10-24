@@ -10,7 +10,7 @@ import com.JudyOJ.judge.codesandbox.model.ExecuteCodeRequest;
 import com.JudyOJ.judge.codesandbox.model.ExecuteCodeResponse;
 import com.JudyOJ.judge.codesandbox.strategy.JudgeContext;
 import com.JudyOJ.model.dto.question.JudgeCase;
-import com.JudyOJ.model.dto.questionsubmit.JudgeInfo;
+import com.JudyOJ.judge.codesandbox.model.JudgeInfo;
 import com.JudyOJ.model.entity.Question;
 import com.JudyOJ.model.entity.QuestionSubmit;
 import com.JudyOJ.model.enums.QuestionSubmitStatusEnum;
@@ -34,6 +34,9 @@ public class JudgeServiceImpl implements JudgeService {
 
     @Resource
     private QuestionSubmitService questionSubmitService;
+
+    @Resource
+    private JudgeManager judgeManager;
 
     @Value("${codesandbox.type:example}")
     String type;

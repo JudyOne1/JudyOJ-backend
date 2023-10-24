@@ -5,7 +5,7 @@ import com.JudyOJ.judge.codesandbox.strategy.DefaultJudgeStrategy;
 import com.JudyOJ.judge.codesandbox.strategy.JavaLanguageJudgeStrategy;
 import com.JudyOJ.judge.codesandbox.strategy.JudgeContext;
 import com.JudyOJ.judge.codesandbox.strategy.JudgeStrategy;
-import com.JudyOJ.model.dto.questionsubmit.JudgeInfo;
+import com.JudyOJ.judge.codesandbox.model.JudgeInfo;
 import com.JudyOJ.model.entity.QuestionSubmit;
 import org.springframework.stereotype.Service;
 
