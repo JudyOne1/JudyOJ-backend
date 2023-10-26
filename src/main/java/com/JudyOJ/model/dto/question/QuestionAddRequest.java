@@ -8,8 +8,7 @@ import java.util.List;
 /**
  * 创建请求
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ *
  */
 @Data
 public class QuestionAddRequest implements Serializable {
@@ -43,6 +42,23 @@ public class QuestionAddRequest implements Serializable {
      * 判题配置
      */
     private JudgeConfig judgeConfig;
+
+    /**
+     * 1-ACM | 2-CCM | 3-counter
+     */
+    private Integer mode;
+
+    /**
+     * CCM核心代码模式的模板代码
+     */
+    private String defaultCode;
+
+    /**
+     * 对数器的代码
+     */
+    private String countCode;
+
+
 
     private static final long serialVersionUID = 1L;
 }

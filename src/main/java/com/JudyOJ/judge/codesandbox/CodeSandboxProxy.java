@@ -1,5 +1,6 @@
 package com.JudyOJ.judge.codesandbox;
 
+import cn.hutool.json.JSONUtil;
 import com.JudyOJ.judge.codesandbox.CodeSandbox;
 import com.JudyOJ.judge.codesandbox.model.ExecuteCodeRequest;
 import com.JudyOJ.judge.codesandbox.model.ExecuteCodeResponse;
@@ -18,9 +19,9 @@ public class CodeSandboxProxy implements CodeSandbox {
 
     @Override
     public ExecuteCodeResponse executeCode(ExecuteCodeRequest executeCodeRequest) {
-        log.info(""+executeCodeRequest);
+        log.info("执行代码请求："+ JSONUtil.toJsonStr(executeCodeRequest));
         ExecuteCodeResponse executeCodeResponse = codeSandbox.executeCode(executeCodeRequest);
-        log.info(""+executeCodeResponse);
+        log.info("执行代码结果："+JSONUtil.toJsonStr(executeCodeResponse));
         return executeCodeResponse;
     }
 }

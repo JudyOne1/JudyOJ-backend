@@ -1,16 +1,18 @@
 package com.JudyOJ.model.dto.questionsubmit;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 /**
- * 创建请求
+ * 题目提交请求
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class QuestionSubmitAddRequest implements Serializable {
 
     /**
@@ -27,6 +29,12 @@ public class QuestionSubmitAddRequest implements Serializable {
      * 题目 id
      */
     private Long questionId;
+
+    /**
+     * 模式 1-ACM | 2-Leetcode
+     */
+    //todo 模式选择
+    private Long mode;
 
     private static final long serialVersionUID = 1L;
 }

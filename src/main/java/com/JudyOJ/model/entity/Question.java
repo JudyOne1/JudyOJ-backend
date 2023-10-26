@@ -57,6 +57,21 @@ public class Question implements Serializable {
     private String judgeConfig;
 
     /**
+     * 所拥有的题目模式相加1-ACM | 2-CCM | 4-counter
+     */
+    private Integer mode;
+
+    /**
+     * CCM核心代码模式的模板代码(对数器也用)
+     */
+    private String defaultCode;
+
+    /**
+     * 对数器的代码
+     */
+    private String countCode;
+
+    /**
      * 题目提交数
      */
     private Integer submitNum;

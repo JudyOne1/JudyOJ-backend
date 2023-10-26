@@ -13,7 +13,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * @author Judy 
  *  
  */
-// todo 如需开启 Redis，须移除 exclude 中的内容
 @SpringBootApplication(exclude = {RedisAutoConfiguration.class})
 @MapperScan("com.JudyOJ.mapper")
 @EnableScheduling
@@ -24,4 +23,9 @@ public class MainApplication {
         SpringApplication.run(MainApplication.class, args);
     }
 
+    //todo  acm模式与leetcode模式
+    //todo  docker代码沙箱
+    //todo  代码记录
+    //todo  判题日志完善
+    //todo  代码缓存
 }

@@ -1,8 +1,10 @@
 package com.JudyOJ.service.impl;
 
 import com.JudyOJ.common.ErrorCode;
+import com.JudyOJ.common.ResultUtils;
 import com.JudyOJ.constant.CommonConstant;
 import com.JudyOJ.exception.BusinessException;
+import com.JudyOJ.exception.ThrowUtils;
 import com.JudyOJ.judge.JudgeService;
 import com.JudyOJ.model.dto.questionsubmit.QuestionSubmitAddRequest;
 import com.JudyOJ.model.dto.questionsubmit.QuestionSubmitQueryRequest;
@@ -67,6 +69,12 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
      */
     @Override
     public long doQuestionSubmit(QuestionSubmitAddRequest questionSubmitAddRequest, User loginUser) {
+        String userCode = questionSubmitAddRequest.getCode();
+        if (!userCode.startsWith("public class Main{") || !userCode.endsWith("}")) {
+            //ACM模式不以 public class Main{    } 为结构，抛异常
+            //todo 增加leetcode模式的判断
+            ResultUtils.error(ErrorCode.POST_CODE_ERROR,"请勿修改题目初始模板");
+        }
         // 校验编程语言是否合法
         String language = questionSubmitAddRequest.getLanguage();
         QuestionSubmitLanguageEnum languageEnum = QuestionSubmitLanguageEnum.getEnumByValue(language);
@@ -83,9 +91,10 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
         long userId = loginUser.getId();
         // 每个用户串行提交题目
         QuestionSubmit questionSubmit = new QuestionSubmit();
+
+        questionSubmit.setCode(userCode);
         questionSubmit.setUserId(userId);
         questionSubmit.setQuestionId(questionId);
-        questionSubmit.setCode(questionSubmitAddRequest.getCode());
         questionSubmit.setLanguage(language);
         // 设置初始状态
         questionSubmit.setStatus(QuestionSubmitStatusEnum.WAITING.getValue());

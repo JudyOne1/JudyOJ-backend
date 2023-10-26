@@ -50,6 +50,11 @@ public class QuestionSubmit implements Serializable {
     private Long userId;
 
     /**
+     * 选择的题目模式 1-ACM | 2-CCM | 4-counter
+     */
+    private Integer modeSelect;
+
+    /**
      * 创建时间
      */
     private Date createTime;

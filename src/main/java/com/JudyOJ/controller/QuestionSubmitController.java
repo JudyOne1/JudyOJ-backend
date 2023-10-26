@@ -1,30 +1,12 @@
 package com.JudyOJ.controller;
 
-import com.JudyOJ.common.BaseResponse;
-import com.JudyOJ.common.ErrorCode;
-import com.JudyOJ.common.ResultUtils;
-import com.JudyOJ.exception.BusinessException;
-
-import com.JudyOJ.model.dto.questionsubmit.QuestionSubmitAddRequest;
-import com.JudyOJ.model.dto.questionsubmit.QuestionSubmitQueryRequest;
-import com.JudyOJ.model.entity.QuestionSubmit;
-import com.JudyOJ.model.entity.User;
-import com.JudyOJ.model.vo.QuestionSubmitVO;
-import com.JudyOJ.service.QuestionSubmitService;
-import com.JudyOJ.service.UserService;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * 题目提交接口
- *
+ * 转移至questionController中
  * @author Judy 
  *  
  */

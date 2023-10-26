@@ -13,6 +13,9 @@
             <result property="answer" column="answer" jdbcType="VARCHAR"/>
             <result property="judgeCase" column="judgeCase" jdbcType="VARCHAR"/>
             <result property="judgeConfig" column="judgeConfig" jdbcType="VARCHAR"/>
+            <result property="mode" column="mode" jdbcType="TINYINT"/>
+            <result property="defaultCode" column="defaultCode" jdbcType="VARCHAR"/>
+            <result property="countCode" column="countCode" jdbcType="VARCHAR"/>
             <result property="submitNum" column="submitNum" jdbcType="INTEGER"/>
             <result property="acceptedNum" column="acceptedNum" jdbcType="INTEGER"/>
             <result property="thumbNum" column="thumbNum" jdbcType="INTEGER"/>
@@ -25,7 +28,8 @@
     <sql id="Base_Column_List">
         id,userId,title,
         content,tags,answer,
-        judgeCase,judgeConfig,submitNum,
+        judgeCase,judgeConfig,mode,
+        defaultCode,countCode,submitNum,
         acceptedNum,thumbNum,favourNum,
         createTime,updateTime,isDelete
     </sql>
