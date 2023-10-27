@@ -49,5 +49,20 @@ public class QuestionUpdateRequest implements Serializable {
      */
     private JudgeConfig judgeConfig;
 
+    /**
+     * 1-ACM | 2-CCM | 3-counter
+     */
+    private Integer mode;
+
+    /**
+     * CCM核心代码模式的模板代码
+     */
+    private String defaultCode;
+
+    /**
+     * 对数器的代码
+     */
+    private String countCode;
+
     private static final long serialVersionUID = 1L;
 }

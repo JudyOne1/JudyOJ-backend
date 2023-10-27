@@ -111,7 +111,6 @@ public class QuestionController {
                 return ResultUtils.error(ErrorCode.PARAMS_ERROR,"对数器模式模板出错");
             }
         }
-
         questionService.validQuestion(question, true);
         User loginUser = userService.getLoginUser(request);
         question.setUserId(loginUser.getId());
@@ -194,6 +193,34 @@ public class QuestionController {
         JudgeConfig judgeConfig = questionUpdateRequest.getJudgeConfig();
         if (judgeConfig != null) {
             question.setJudgeConfig(GSON.toJson(judgeConfig));
+        }
+
+        //mode
+        Integer mode = questionUpdateRequest.getMode();
+        question.setMode(mode);
+        //模式判断124,1,2,4[1+2=3][2+4=6][1+4=5][1+2+4=7]
+        Mode modedJudge = modeJudgment(mode);
+        if (modedJudge.getModeNums() == 0){
+            return ResultUtils.error(ErrorCode.PARAMS_ERROR,"模式未选择");
+        }
+        if (modedJudge.getIsCCM().intValue() == 1){
+            //核心代码模式 需要有模板代码
+            String defaultCode = questionUpdateRequest.getDefaultCode();
+            if (defaultCode != null && !defaultCode.isEmpty()){
+                question.setDefaultCode(defaultCode);
+            }else {
+                return ResultUtils.error(ErrorCode.PARAMS_ERROR,"核心代码模式模板出错");
+            }
+        } else if (modedJudge.getIsCount().intValue() == 1) {
+            //对数器模式 需要有模板代码和对数器代码
+            String defaultCode = questionUpdateRequest.getDefaultCode();
+            String countCode = questionUpdateRequest.getCountCode();
+            if ((defaultCode != null && !defaultCode.isEmpty()) && (countCode !=null && !countCode.isEmpty())){
+                question.setDefaultCode(defaultCode);
+                question.setCountCode(countCode);
+            }else {
+                return ResultUtils.error(ErrorCode.PARAMS_ERROR,"对数器模式模板出错");
+            }
         }
         // 参数校验
         questionService.validQuestion(question, false);
