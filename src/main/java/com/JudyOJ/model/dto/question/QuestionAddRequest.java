@@ -54,6 +54,11 @@ public class QuestionAddRequest implements Serializable {
     private String defaultCode;
 
     /**
+     * CCM核心代码模式的辅助代码
+     */
+    private String helpCode;
+
+    /**
      * 对数器的代码
      */
     private String countCode;

@@ -48,5 +48,25 @@ public class QuestionEditRequest implements Serializable {
      */
     private JudgeConfig judgeConfig;
 
+    /**
+     * 1-ACM | 2-CCM | 3-counter
+     */
+    private Integer mode;
+
+    /**
+     * CCM核心代码模式的模板代码
+     */
+    private String defaultCode;
+
+    /**
+     * CCM核心代码模式的辅助代码
+     */
+    private String helpCode;
+
+    /**
+     * 对数器的代码
+     */
+    private String countCode;
+
     private static final long serialVersionUID = 1L;
 }

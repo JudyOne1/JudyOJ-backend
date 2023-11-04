@@ -1,35 +1,36 @@
 package com.JudyOJ.controller;
 
+import com.JudyOJ.annotation.AuthCheck;
 import com.JudyOJ.common.BaseResponse;
 import com.JudyOJ.common.DeleteRequest;
 import com.JudyOJ.common.ErrorCode;
 import com.JudyOJ.common.ResultUtils;
+import com.JudyOJ.constant.UserConstant;
+import com.JudyOJ.exception.BusinessException;
+import com.JudyOJ.exception.ThrowUtils;
 import com.JudyOJ.model.dto.question.*;
 import com.JudyOJ.model.dto.questionsubmit.QuestionSubmitAddRequest;
 import com.JudyOJ.model.dto.questionsubmit.QuestionSubmitQueryRequest;
 import com.JudyOJ.model.entity.Mode;
-import com.JudyOJ.model.entity.QuestionSubmit;
-import com.JudyOJ.model.enums.JudgeModeEnum;
-import com.JudyOJ.model.vo.QuestionSubmitVO;
-import com.JudyOJ.service.QuestionSubmitService;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.google.gson.Gson;
-import com.JudyOJ.annotation.AuthCheck;
-import com.JudyOJ.constant.UserConstant;
-import com.JudyOJ.exception.BusinessException;
-import com.JudyOJ.exception.ThrowUtils;
 import com.JudyOJ.model.entity.Question;
+import com.JudyOJ.model.entity.QuestionSubmit;
 import com.JudyOJ.model.entity.User;
+import com.JudyOJ.model.vo.QuestionSubmitVO;
 import com.JudyOJ.model.vo.QuestionVO;
 import com.JudyOJ.service.QuestionService;
+import com.JudyOJ.service.QuestionSubmitService;
 import com.JudyOJ.service.UserService;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+
 
 /**
  * 题目接口
@@ -52,9 +53,6 @@ public class QuestionController {
     private QuestionSubmitService questionSubmitService;
 
     private final static Gson GSON = new Gson();
-
-
-    // region 增删改查
 
 
 
@@ -89,26 +87,28 @@ public class QuestionController {
         question.setMode(mode);
         //模式判断124,1,2,4[1+2=3][2+4=6][1+4=5][1+2+4=7]
         Mode modedJudge = modeJudgment(mode);
-        if (modedJudge.getModeNums() == 0){
-            return ResultUtils.error(ErrorCode.PARAMS_ERROR,"模式未选择");
+        if (modedJudge.getModeNums() == 0) {
+            return ResultUtils.error(ErrorCode.PARAMS_ERROR, "模式未选择");
         }
-        if (modedJudge.getIsCCM().intValue() == 1){
-            //核心代码模式 需要有模板代码
+        if (modedJudge.getIsCCM().intValue() == 1) {
+            //核心代码模式 需要有模板代码和辅助模板
             String defaultCode = questionAddRequest.getDefaultCode();
-            if (defaultCode != null && !defaultCode.isEmpty()){
+            String helpCode = questionAddRequest.getHelpCode();
+            if ((defaultCode != null && !defaultCode.isEmpty()) && (helpCode != null && !helpCode.isEmpty())) {
                 question.setDefaultCode(defaultCode);
-            }else {
-                return ResultUtils.error(ErrorCode.PARAMS_ERROR,"核心代码模式模板出错");
+                question.setHelpCode(helpCode);
+            } else {
+                return ResultUtils.error(ErrorCode.PARAMS_ERROR, "核心代码模式模板出错");
             }
         } else if (modedJudge.getIsCount().intValue() == 1) {
             //对数器模式 需要有模板代码和对数器代码
             String defaultCode = questionAddRequest.getDefaultCode();
             String countCode = questionAddRequest.getCountCode();
-            if ((defaultCode != null && !defaultCode.isEmpty()) && (countCode !=null && !countCode.isEmpty())){
+            if ((defaultCode != null && !defaultCode.isEmpty()) && (countCode != null && !countCode.isEmpty())) {
                 question.setDefaultCode(defaultCode);
                 question.setCountCode(countCode);
-            }else {
-                return ResultUtils.error(ErrorCode.PARAMS_ERROR,"对数器模式模板出错");
+            } else {
+                return ResultUtils.error(ErrorCode.PARAMS_ERROR, "对数器模式模板出错");
             }
         }
         questionService.validQuestion(question, true);
@@ -123,23 +123,23 @@ public class QuestionController {
     }
 
     private Mode modeJudgment(int mode) {
-        switch (mode){
+        switch (mode) {
             case 1:
-                return new Mode(1,1,0,0);
+                return new Mode(1, 1, 0, 0);
             case 2:
-                return new Mode(2,0,1,0);
+                return new Mode(2, 0, 1, 0);
             case 3:
-                return new Mode(3,1,1,0);
+                return new Mode(3, 1, 1, 0);
             case 4:
-                return new Mode(4,0,0,1);
+                return new Mode(4, 0, 0, 1);
             case 5:
-                return new Mode(5,1,0,1);
+                return new Mode(5, 1, 0, 1);
             case 6:
-                return new Mode(6,0,1,1);
+                return new Mode(6, 0, 1, 1);
             case 7:
-                return new Mode(7,1,1,1);
+                return new Mode(7, 1, 1, 1);
             default:
-                return new Mode(0,0,0,0);
+                return new Mode(0, 0, 0, 0);
         }
     }
 
@@ -200,26 +200,28 @@ public class QuestionController {
         question.setMode(mode);
         //模式判断124,1,2,4[1+2=3][2+4=6][1+4=5][1+2+4=7]
         Mode modedJudge = modeJudgment(mode);
-        if (modedJudge.getModeNums() == 0){
-            return ResultUtils.error(ErrorCode.PARAMS_ERROR,"模式未选择");
+        if (modedJudge.getModeNums() == 0) {
+            return ResultUtils.error(ErrorCode.PARAMS_ERROR, "模式未选择");
         }
-        if (modedJudge.getIsCCM().intValue() == 1){
-            //核心代码模式 需要有模板代码
+        if (modedJudge.getIsCCM().intValue() == 1) {
+            //核心代码模式 需要有模板代码和辅助模板
             String defaultCode = questionUpdateRequest.getDefaultCode();
-            if (defaultCode != null && !defaultCode.isEmpty()){
+            String helpCode = questionUpdateRequest.getHelpCode();
+            if ((defaultCode != null && !defaultCode.isEmpty()) && (helpCode != null && !helpCode.isEmpty())) {
                 question.setDefaultCode(defaultCode);
-            }else {
-                return ResultUtils.error(ErrorCode.PARAMS_ERROR,"核心代码模式模板出错");
+                question.setHelpCode(helpCode);
+            } else {
+                return ResultUtils.error(ErrorCode.PARAMS_ERROR, "核心代码模式模板出错");
             }
         } else if (modedJudge.getIsCount().intValue() == 1) {
             //对数器模式 需要有模板代码和对数器代码
             String defaultCode = questionUpdateRequest.getDefaultCode();
             String countCode = questionUpdateRequest.getCountCode();
-            if ((defaultCode != null && !defaultCode.isEmpty()) && (countCode !=null && !countCode.isEmpty())){
+            if ((defaultCode != null && !defaultCode.isEmpty()) && (countCode != null && !countCode.isEmpty())) {
                 question.setDefaultCode(defaultCode);
                 question.setCountCode(countCode);
-            }else {
-                return ResultUtils.error(ErrorCode.PARAMS_ERROR,"对数器模式模板出错");
+            } else {
+                return ResultUtils.error(ErrorCode.PARAMS_ERROR, "对数器模式模板出错");
             }
         }
         // 参数校验
@@ -334,7 +336,6 @@ public class QuestionController {
         return ResultUtils.success(questionPage);
     }
 
-    // endregion
 
     /**
      * 编辑（用户）
@@ -390,6 +391,9 @@ public class QuestionController {
         if (questionSubmitAddRequest == null || questionSubmitAddRequest.getQuestionId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
+        if (questionSubmitAddRequest.getModeSelect() == null){
+            return ResultUtils.error(ErrorCode.PARAMS_ERROR,"请选择判题模式");
+        }
         final User loginUser = userService.getLoginUser(request);
         long questionSubmitId = questionSubmitService.doQuestionSubmit(questionSubmitAddRequest, loginUser);
         return ResultUtils.success(questionSubmitId);
@@ -414,6 +418,8 @@ public class QuestionController {
         // 返回脱敏信息
         return ResultUtils.success(questionSubmitService.getQuestionSubmitVOPage(questionSubmitPage, loginUser));
     }
+
+
 
 
 }

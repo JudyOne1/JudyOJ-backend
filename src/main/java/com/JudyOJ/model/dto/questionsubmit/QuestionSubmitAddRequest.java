@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+
 /**
  * 题目提交请求
  *
@@ -31,10 +32,10 @@ public class QuestionSubmitAddRequest implements Serializable {
     private Long questionId;
 
     /**
-     * 模式 1-ACM | 2-Leetcode
+     * 1-ACM | 2-CCM | 3-counter
      */
-    //todo 模式选择
-    private Long mode;
+    private Integer modeSelect;
+
 
     private static final long serialVersionUID = 1L;
 }

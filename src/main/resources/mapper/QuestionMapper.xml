@@ -16,6 +16,7 @@
             <result property="mode" column="mode" jdbcType="TINYINT"/>
             <result property="defaultCode" column="defaultCode" jdbcType="VARCHAR"/>
             <result property="countCode" column="countCode" jdbcType="VARCHAR"/>
+            <result property="helpCode" column="helpCode" jdbcType="VARCHAR"/>
             <result property="submitNum" column="submitNum" jdbcType="INTEGER"/>
             <result property="acceptedNum" column="acceptedNum" jdbcType="INTEGER"/>
             <result property="thumbNum" column="thumbNum" jdbcType="INTEGER"/>
@@ -29,8 +30,9 @@
         id,userId,title,
         content,tags,answer,
         judgeCase,judgeConfig,mode,
-        defaultCode,countCode,submitNum,
-        acceptedNum,thumbNum,favourNum,
-        createTime,updateTime,isDelete
+        defaultCode,countCode,helpCode,
+        submitNum,acceptedNum,thumbNum,
+        favourNum,createTime,updateTime,
+        isDelete
     </sql>
 </mapper>

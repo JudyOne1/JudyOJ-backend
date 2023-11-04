@@ -72,6 +72,11 @@ public class Question implements Serializable {
     private String countCode;
 
     /**
+     * CCM核心代码模式的辅助代码
+     */
+    private String helpCode;
+
+    /**
      * 题目提交数
      */
     private Integer submitNum;

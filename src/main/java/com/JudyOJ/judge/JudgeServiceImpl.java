@@ -81,6 +81,7 @@ public class JudgeServiceImpl implements JudgeService {
         String language = questionSubmit.getLanguage();
         String code = questionSubmit.getCode();
         // 获取输入用例
+        //todo 怎么把用例给核心代码模式
         String judgeCaseStr = question.getJudgeCase();
         List<JudgeCase> judgeCaseList = JSONUtil.toList(judgeCaseStr, JudgeCase.class);
         List<String> inputList = judgeCaseList.stream().map(JudgeCase::getInput).collect(Collectors.toList());

@@ -1,12 +1,8 @@
 package com.JudyOJ.model.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 模式

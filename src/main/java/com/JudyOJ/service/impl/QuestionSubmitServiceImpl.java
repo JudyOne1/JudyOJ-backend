@@ -62,6 +62,7 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
 
     /**
      * 提交题目
+     * code不能在这里修改
      *
      * @param questionSubmitAddRequest
      * @param loginUser
@@ -70,11 +71,28 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
     @Override
     public long doQuestionSubmit(QuestionSubmitAddRequest questionSubmitAddRequest, User loginUser) {
         String userCode = questionSubmitAddRequest.getCode();
-        if (!userCode.startsWith("public class Main{") || !userCode.endsWith("}")) {
-            //ACM模式不以 public class Main{    } 为结构，抛异常
-            //todo 增加leetcode模式的判断
-            ResultUtils.error(ErrorCode.POST_CODE_ERROR,"请勿修改题目初始模板");
+        Integer modeSelect = questionSubmitAddRequest.getModeSelect();
+        switch (modeSelect){
+            case 1:
+                if (!userCode.startsWith("public class Main{") || !userCode.endsWith("}")) {
+                    //ACM模式不以 public class Main{    } 为结构，抛异常
+                    ResultUtils.error(ErrorCode.POST_CODE_ERROR,"请勿修改题目初始模板");
+                }
+                break;
+            case 2:
+                if (!userCode.startsWith("class Solution {") || !userCode.endsWith("}")) {
+                    //核心代码模式不以 class Solution {    } 为结构，抛异常
+                    ResultUtils.error(ErrorCode.POST_CODE_ERROR,"请勿修改题目初始模板");
+                }
+                break;
+            case 4:
+                if (!userCode.startsWith("class Solution {") || !userCode.endsWith("}")) {
+                    //对数器模式不以 class Solution {    } 为结构，抛异常
+                    ResultUtils.error(ErrorCode.POST_CODE_ERROR,"请勿修改题目初始模板");
+                }
+                break;
         }
+
         // 校验编程语言是否合法
         String language = questionSubmitAddRequest.getLanguage();
         QuestionSubmitLanguageEnum languageEnum = QuestionSubmitLanguageEnum.getEnumByValue(language);
@@ -99,10 +117,12 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
         // 设置初始状态
         questionSubmit.setStatus(QuestionSubmitStatusEnum.WAITING.getValue());
         questionSubmit.setJudgeInfo("{}");
+        questionSubmit.setModeSelect(modeSelect);
         boolean save = this.save(questionSubmit);
         if (!save) {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "数据插入失败");
         }
+        //todo code是否可以在此增加
         Long questionSubmitId = questionSubmit.getId();
         // 执行判题服务
         CompletableFuture.runAsync(() -> {
