@@ -1,5 +1,6 @@
 package com.JudyOJ.controller;
 
+import cn.hutool.json.JSONUtil;
 import com.JudyOJ.annotation.AuthCheck;
 import com.JudyOJ.common.BaseResponse;
 import com.JudyOJ.common.DeleteRequest;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -53,7 +55,6 @@ public class QuestionController {
     private QuestionSubmitService questionSubmitService;
 
     private final static Gson GSON = new Gson();
-
 
 
     /**
@@ -333,7 +334,18 @@ public class QuestionController {
         long size = questionQueryRequest.getPageSize();
         Page<Question> questionPage = questionService.page(new Page<>(current, size),
                 questionService.getQueryWrapper(questionQueryRequest));
-        return ResultUtils.success(questionPage);
+        return ResultUtils.success(translateTags(questionPage));
+    }
+
+    public Page<Question> translateTags(Page<Question> questionPage) {
+        List<Question> questionList = questionPage.getRecords();
+        List<Question> collect = questionList.stream().map((question -> {
+            List<String> tagList = JSONUtil.toList(question.getTags(), String.class);
+            question.setTags(JSONUtil.toJsonStr(tagList));
+            return question;
+        })).collect(Collectors.toList());
+        return questionPage.setRecords(collect);
+
     }
 
 
@@ -391,8 +403,8 @@ public class QuestionController {
         if (questionSubmitAddRequest == null || questionSubmitAddRequest.getQuestionId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        if (questionSubmitAddRequest.getModeSelect() == null){
-            return ResultUtils.error(ErrorCode.PARAMS_ERROR,"请选择判题模式");
+        if (questionSubmitAddRequest.getModeSelect() == null) {
+            return ResultUtils.error(ErrorCode.PARAMS_ERROR, "请选择判题模式");
         }
         final User loginUser = userService.getLoginUser(request);
         long questionSubmitId = questionSubmitService.doQuestionSubmit(questionSubmitAddRequest, loginUser);
@@ -419,7 +431,24 @@ public class QuestionController {
         return ResultUtils.success(questionSubmitService.getQuestionSubmitVOPage(questionSubmitPage, loginUser));
     }
 
-
+    /**
+     * 获取题目的基础代码
+     *
+     * @param id 题目ID
+     * @return 提交记录的 id
+     */
+    @GetMapping("/question/getDefaultCode")
+    public BaseResponse<String> getDefaultCode(long id) {
+        if (id <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        Question question = questionService.getById(id);
+        if (question == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        String defaultCode = question.getDefaultCode();
+        return ResultUtils.success(JSONUtil.toJsonStr(defaultCode));
+    }
 
 
 }

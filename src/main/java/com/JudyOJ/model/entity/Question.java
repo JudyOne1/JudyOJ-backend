@@ -18,7 +18,7 @@ public class Question implements Serializable {
      * TableId(type = IdType.AUTO)改成IdType.AUTO
      * 非连续自增
      */
-    @TableId(type = IdType.ASSIGN_ID)
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**

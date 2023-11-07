@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * 题目封装类
+ *
  * @TableName question
  */
 @Data
@@ -81,6 +82,11 @@ public class QuestionVO implements Serializable {
      * 创建题目人的信息
      */
     private UserVO userVO;
+
+    /**
+     * 所拥有的题目模式相加1-ACM | 2-CCM | 4-counter
+     */
+    private Integer mode;
 
     /**
      * 包装类转对象
