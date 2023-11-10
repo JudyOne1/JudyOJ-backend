@@ -62,7 +62,6 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
 
     /**
      * 提交题目
-     * code不能在这里修改
      *
      * @param questionSubmitAddRequest
      * @param loginUser
@@ -72,25 +71,28 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
     public long doQuestionSubmit(QuestionSubmitAddRequest questionSubmitAddRequest, User loginUser) {
         String userCode = questionSubmitAddRequest.getCode();
         Integer modeSelect = questionSubmitAddRequest.getModeSelect();
-        switch (modeSelect){
-            case 1:
+        //剔除import
+        StringBuilder stringBuilder = new StringBuilder(userCode);
+        String[] split = userCode.split("public");
+        if (split.length > 1) {
+            //有public
+            String ACMCode = "public" + split[1];
+            if (modeSelect == 1) {
                 if (!userCode.startsWith("public class Main{") || !userCode.endsWith("}")) {
                     //ACM模式不以 public class Main{    } 为结构，抛异常
-                    ResultUtils.error(ErrorCode.POST_CODE_ERROR,"请勿修改题目初始模板");
+                    ResultUtils.error(ErrorCode.POST_CODE_ERROR, "请勿修改题目初始模板");
                 }
-                break;
-            case 2:
-                if (!userCode.startsWith("class Solution {") || !userCode.endsWith("}")) {
+            }
+        } else {
+            //没有public => 核心代码模式
+            split = userCode.split("class");
+            String CMCode = "class" + split[1];
+            if (modeSelect == 2 || modeSelect == 4) {
+                if (!CMCode.startsWith("class Solution {") || !CMCode.endsWith("}")) {
                     //核心代码模式不以 class Solution {    } 为结构，抛异常
-                    ResultUtils.error(ErrorCode.POST_CODE_ERROR,"请勿修改题目初始模板");
+                    ResultUtils.error(ErrorCode.POST_CODE_ERROR, "请勿修改题目初始模板");
                 }
-                break;
-            case 4:
-                if (!userCode.startsWith("class Solution {") || !userCode.endsWith("}")) {
-                    //对数器模式不以 class Solution {    } 为结构，抛异常
-                    ResultUtils.error(ErrorCode.POST_CODE_ERROR,"请勿修改题目初始模板");
-                }
-                break;
+            }
         }
 
         // 校验编程语言是否合法
@@ -109,7 +111,7 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
         long userId = loginUser.getId();
         // 每个用户串行提交题目
         QuestionSubmit questionSubmit = new QuestionSubmit();
-
+        //userCode要在判题时修改
         questionSubmit.setCode(userCode);
         questionSubmit.setUserId(userId);
         questionSubmit.setQuestionId(questionId);
@@ -122,7 +124,6 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
         if (!save) {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "数据插入失败");
         }
-        //todo code是否可以在此增加
         Long questionSubmitId = questionSubmit.getId();
         // 执行判题服务
         CompletableFuture.runAsync(() -> {

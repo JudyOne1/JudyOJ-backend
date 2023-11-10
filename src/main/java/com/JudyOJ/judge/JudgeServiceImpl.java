@@ -16,6 +16,7 @@ import com.JudyOJ.model.entity.QuestionSubmit;
 import com.JudyOJ.model.enums.QuestionSubmitStatusEnum;
 import com.JudyOJ.service.QuestionService;
 import com.JudyOJ.service.QuestionSubmitService;
+import com.JudyOJ.utils.CodeUtils;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -80,8 +81,25 @@ public class JudgeServiceImpl implements JudgeService {
         codeSandbox = new CodeSandboxProxy(codeSandbox);
         String language = questionSubmit.getLanguage();
         String code = questionSubmit.getCode();
+        Integer modeSelect = questionSubmit.getModeSelect();
+        String helpCode;
         // 获取输入用例
-        //todo 怎么把用例给核心代码模式
+        //code在此处修改
+        switch (modeSelect){
+            case 1:
+                //拼接import
+                //TODO 处理acm模式的code
+                break;
+            case 2:
+                helpCode = question.getHelpCode();
+                code = CodeUtils.dealWithCCMCode(helpCode, code);
+                break;
+            case 4:
+                helpCode = question.getHelpCode();
+                code = CodeUtils.dealWithCMCode(helpCode,code);
+                //finish！
+                break;
+        }
         String judgeCaseStr = question.getJudgeCase();
         List<JudgeCase> judgeCaseList = JSONUtil.toList(judgeCaseStr, JudgeCase.class);
         List<String> inputList = judgeCaseList.stream().map(JudgeCase::getInput).collect(Collectors.toList());
@@ -89,6 +107,7 @@ public class JudgeServiceImpl implements JudgeService {
                 .code(code)
                 .language(language)
                 .inputList(inputList)
+                .modeSelect(modeSelect)
                 .build();
         // 执行代码沙箱 运行用户java程序
         ExecuteCodeResponse executeCodeResponse = codeSandbox.executeCode(executeCodeRequest);
