@@ -85,10 +85,9 @@ public class JudgeServiceImpl implements JudgeService {
         String helpCode;
         // 获取输入用例
         //code在此处修改
-        switch (modeSelect){
+        switch (modeSelect) {
             case 1:
-                //拼接import
-                //TODO 处理acm模式的code
+                //好像AMC模式不需要处理
                 break;
             case 2:
                 helpCode = question.getHelpCode();
@@ -96,7 +95,7 @@ public class JudgeServiceImpl implements JudgeService {
                 break;
             case 4:
                 helpCode = question.getHelpCode();
-                code = CodeUtils.dealWithCMCode(helpCode,code);
+                code = CodeUtils.dealWithCMCode(helpCode, code);
                 //finish！
                 break;
         }
