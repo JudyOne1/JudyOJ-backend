@@ -101,7 +101,12 @@ public class JudgeServiceImpl implements JudgeService {
         }
         String judgeCaseStr = question.getJudgeCase();
         List<JudgeCase> judgeCaseList = JSONUtil.toList(judgeCaseStr, JudgeCase.class);
-        List<String> inputList = judgeCaseList.stream().map(JudgeCase::getInput).collect(Collectors.toList());
+        List<String> inputList = judgeCaseList.stream().map(item->{
+            String input = item.getInput();
+            //   "换成\"
+            String textWithBackslash = input.replaceAll("\"", "\\\\\"");
+            return textWithBackslash;
+        }).collect(Collectors.toList());
         ExecuteCodeRequest executeCodeRequest = ExecuteCodeRequest.builder()
                 .code(code)
                 .language(language)

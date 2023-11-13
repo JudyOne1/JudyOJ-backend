@@ -21,6 +21,8 @@ import com.JudyOJ.model.vo.QuestionVO;
 import com.JudyOJ.service.QuestionService;
 import com.JudyOJ.service.QuestionSubmitService;
 import com.JudyOJ.service.UserService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
@@ -76,6 +78,12 @@ public class QuestionController {
             question.setTags(GSON.toJson(tags));
         }
         List<JudgeCase> judgeCase = questionAddRequest.getJudgeCase();
+        //去除空格
+        judgeCase = judgeCase.stream().map(item -> {
+            //"text1 \u003d \"abcde\", text2 \u003d \"ace\"
+            item.setInput(item.getInput().replace(" ", ""));
+            return item;
+        }).collect(Collectors.toList());
         if (judgeCase != null) {
             question.setJudgeCase(GSON.toJson(judgeCase));
         }
@@ -188,6 +196,11 @@ public class QuestionController {
             question.setTags(GSON.toJson(tags));
         }
         List<JudgeCase> judgeCase = questionUpdateRequest.getJudgeCase();
+        judgeCase = judgeCase.stream().map(item -> {
+            //"text1 \u003d \"abcde\", text2 \u003d \"ace\"
+            item.setInput(item.getInput().replace(" ", ""));
+            return item;
+        }).collect(Collectors.toList());
         if (judgeCase != null) {
             question.setJudgeCase(GSON.toJson(judgeCase));
         }
@@ -368,6 +381,11 @@ public class QuestionController {
             question.setTags(GSON.toJson(tags));
         }
         List<JudgeCase> judgeCase = questionEditRequest.getJudgeCase();
+        judgeCase = judgeCase.stream().map(item -> {
+            //"text1 \u003d \"abcde\", text2 \u003d \"ace\"
+            item.setInput(item.getInput().replace(" ", ""));
+            return item;
+        }).collect(Collectors.toList());
         if (judgeCase != null) {
             question.setJudgeCase(GSON.toJson(judgeCase));
         }
@@ -448,6 +466,22 @@ public class QuestionController {
         }
         String defaultCode = question.getDefaultCode();
         return ResultUtils.success(JSONUtil.toJsonStr(defaultCode));
+    }
+
+    @GetMapping("/question/getQuestionSubmitByUser")
+    public BaseResponse<QuestionSubmit> getQuestionSubmitByUser(long userId, long questionId) {
+        if (userId <= 0 || questionId <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        LambdaQueryWrapper<QuestionSubmit> questionSubmitLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        questionSubmitLambdaQueryWrapper.eq(QuestionSubmit::getUserId,userId).eq(QuestionSubmit::getQuestionId,questionId).orderByDesc(QuestionSubmit::getCreateTime);
+
+        List<QuestionSubmit> list = questionSubmitService.list(questionSubmitLambdaQueryWrapper);
+        QuestionSubmit questionSubmit = list.get(0);
+        if (questionSubmit == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        return ResultUtils.success((questionSubmit));
     }
 
 

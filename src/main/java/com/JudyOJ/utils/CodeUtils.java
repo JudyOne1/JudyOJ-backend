@@ -48,12 +48,12 @@ public class CodeUtils {
                     "    public static ArrayList<String> getParams(String input) {\n" +
                     "\n" +
                     "        ArrayList<String> paramsInfos = new ArrayList<>();\n" +
-                    "        String[] totalSplit = input.split(\", \");\n" +
+                    "        String[] totalSplit = input.split(\",(?=[^\\\\]]*$)\");"+
                     "\n" +
                     "        if (totalSplit.length > 0) {\n" +
                     "            for (int i = 0; i < totalSplit.length; i++) {\n" +
                     "                String name;\n" +
-                    "                String[] subSplit = totalSplit[i].split(\" = \");\n" +
+                    "                String[] subSplit = totalSplit[i].split(\"=\");\n" +
                     "                name = subSplit[0];\n" +
                     "                StringBuilder stringBuilder = new StringBuilder(subSplit[1]);\n" +
                     "                int i1 = stringBuilder.indexOf(\"[\");\n" +
@@ -90,7 +90,7 @@ public class CodeUtils {
                     "            }\n" +
                     "        } else {\n" +
                     "            String name;\n" +
-                    "            String[] nameSplit = input.split(\" = \");\n" +
+                    "            String[] nameSplit = input.split(\"=\");\n" +
                     "            name = nameSplit[0];\n" +
                     "            StringBuilder stringBuilder = new StringBuilder(input);\n" +
                     "            int i1 = stringBuilder.indexOf(\"[\");\n" +
@@ -184,12 +184,12 @@ public class CodeUtils {
                     "    public static ArrayList<ParamsInfo> getParamsByClass(String input) {\n" +
                     "\n" +
                     "        ArrayList<ParamsInfo> paramsInfos = new ArrayList<>();\n" +
-                    "        String[] totalSplit = input.split(\", \");\n" +
+                    "        String[] totalSplit = input.split(\",(?=[^\\\\]]*$)\");"+
                     "\n" +
                     "        if (totalSplit.length > 0) {\n" +
                     "            for (int i = 0; i < totalSplit.length; i++) {\n" +
                     "                String name;\n" +
-                    "                String[] subSplit = totalSplit[i].split(\" = \");\n" +
+                    "                String[] subSplit = totalSplit[i].split(\"=\");\n" +
                     "                name = subSplit[0];\n" +
                     "                StringBuilder stringBuilder = new StringBuilder(subSplit[1]);\n" +
                     "                int i1 = stringBuilder.indexOf(\"[\");\n" +
@@ -223,14 +223,15 @@ public class CodeUtils {
                     "                        ParamsInfo paramsInfo = new ParamsInfo(name, valueInt.toString(), valueInt.getClass());\n" +
                     "                        paramsInfos.add(paramsInfo);\n" +
                     "                    } else {\n" +
-                    "                        ParamsInfo paramsInfo = new ParamsInfo(name, value, value.getClass());\n" +
+                    "                        String valueWithoutQuotes = value.replaceAll(\"^\\\"|\\\"$\", \"\");\n" +
+                    "                        ParamsInfo paramsInfo = new ParamsInfo(name, valueWithoutQuotes, value.getClass());"+
                     "                        paramsInfos.add(paramsInfo);\n" +
                     "                    }\n" +
                     "                }\n" +
                     "            }\n" +
                     "        } else {\n" +
                     "            String name;\n" +
-                    "            String[] nameSplit = input.split(\" = \");\n" +
+                    "            String[] nameSplit = input.split(\"=\");\n" +
                     "            name = nameSplit[0];\n" +
                     "            StringBuilder stringBuilder = new StringBuilder(input);\n" +
                     "            int i1 = stringBuilder.indexOf(\"[\");\n" +
@@ -260,7 +261,8 @@ public class CodeUtils {
                     "                    ParamsInfo paramsInfo = new ParamsInfo(name, valueInt.toString(), valueInt.getClass());\n" +
                     "                    paramsInfos.add(paramsInfo);\n" +
                     "                } else {\n" +
-                    "                    ParamsInfo paramsInfo = new ParamsInfo(name, value, value.getClass());\n" +
+                    "                    String valueWithoutQuotes = value.replaceAll(\"^\\\"|\\\"$\", \"\");\n" +
+                    "                    ParamsInfo paramsInfo = new ParamsInfo(name, valueWithoutQuotes, value.getClass());"+
                     "                    paramsInfos.add(paramsInfo);\n" +
                     "                }\n" +
                     "            }\n" +

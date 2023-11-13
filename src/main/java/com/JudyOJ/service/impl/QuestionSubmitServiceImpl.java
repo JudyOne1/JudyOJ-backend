@@ -72,13 +72,13 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
         String userCode = questionSubmitAddRequest.getCode();
         Integer modeSelect = questionSubmitAddRequest.getModeSelect();
         //剔除import
-        StringBuilder stringBuilder = new StringBuilder(userCode);
+//        StringBuilder stringBuilder = new StringBuilder(userCode);
         String[] split = userCode.split("public");
         if (split.length > 1) {
             //有public
             String ACMCode = "public" + split[1];
             if (modeSelect == 1) {
-                if (!userCode.startsWith("public class Main{") || !userCode.endsWith("}")) {
+                if (!ACMCode.startsWith("public class Main{") || !ACMCode.endsWith("}")) {
                     //ACM模式不以 public class Main{    } 为结构，抛异常
                     ResultUtils.error(ErrorCode.POST_CODE_ERROR, "请勿修改题目初始模板");
                 }

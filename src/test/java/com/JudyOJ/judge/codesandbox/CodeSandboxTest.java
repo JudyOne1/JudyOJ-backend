@@ -19,6 +19,13 @@ import java.util.Scanner;
 @SpringBootTest
 class CodeSandboxTest {
 
+    public static void main(String[] args) {
+        String text = "abc\\";
+        String textWithBackslash = text.replaceAll("\"(?!\\\\)", "\\\\\"");
+
+        System.out.println(textWithBackslash); // 输出: abc\\
+    }
+
     @Value("${codesandbox.type:example}")
     String type;
 
@@ -61,7 +68,7 @@ class CodeSandboxTest {
 
     }
 
-    public static void main(String[] args) {
+    public static void aa(String[] args) {
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNext()) {
             String next = scanner.next();
