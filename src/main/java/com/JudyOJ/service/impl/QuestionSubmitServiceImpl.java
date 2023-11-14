@@ -14,9 +14,11 @@ import com.JudyOJ.model.entity.User;
 import com.JudyOJ.model.enums.QuestionSubmitLanguageEnum;
 import com.JudyOJ.model.enums.QuestionSubmitStatusEnum;
 import com.JudyOJ.model.vo.QuestionSubmitVO;
+import com.JudyOJ.model.vo.QuestionVO;
 import com.JudyOJ.service.QuestionService;
 import com.JudyOJ.service.UserService;
 import com.JudyOJ.utils.SqlUtils;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -25,6 +27,7 @@ import com.JudyOJ.mapper.QuestionSubmitMapper;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -166,6 +169,12 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
     @Override
     public QuestionSubmitVO getQuestionSubmitVO(QuestionSubmit questionSubmit, User loginUser) {
         QuestionSubmitVO questionSubmitVO = QuestionSubmitVO.objToVo(questionSubmit);
+        LambdaQueryWrapper<Question> questionVOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        questionVOLambdaQueryWrapper.eq(Question::getId, questionSubmit.getQuestionId());
+        Question question = questionService.getOne(questionVOLambdaQueryWrapper);
+        QuestionVO questionVO = new QuestionVO();
+        BeanUtils.copyProperties(question, questionVO);
+        questionSubmitVO.setQuestionVO(questionVO);
         // 脱敏：仅本人和管理员能看见自己（提交 userId 和登录用户 id 不同）提交的代码
         long userId = loginUser.getId();
         // 处理脱敏
