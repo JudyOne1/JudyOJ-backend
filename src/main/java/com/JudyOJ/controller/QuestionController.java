@@ -11,6 +11,7 @@ import com.JudyOJ.exception.BusinessException;
 import com.JudyOJ.exception.ThrowUtils;
 import com.JudyOJ.model.dto.question.*;
 import com.JudyOJ.model.dto.questionsubmit.QuestionSubmitAddRequest;
+import com.JudyOJ.model.dto.questionsubmit.QuestionSubmitQueryByIdRequest;
 import com.JudyOJ.model.dto.questionsubmit.QuestionSubmitQueryRequest;
 import com.JudyOJ.model.entity.Mode;
 import com.JudyOJ.model.entity.Question;
@@ -468,21 +469,29 @@ public class QuestionController {
         return ResultUtils.success(JSONUtil.toJsonStr(defaultCode));
     }
 
-    @GetMapping("/question/getQuestionSubmitByUser")
-    public BaseResponse<QuestionSubmit> getQuestionSubmitByUser(long userId, long questionId) {
-        if (userId <= 0 || questionId <= 0) {
+    @PostMapping("/question/getQuestionSubmitByUser")
+    public BaseResponse<QuestionSubmit> getQuestionSubmitByUser(@RequestBody QuestionSubmitQueryByIdRequest request) {
+        if (request.getUserId() <= 0 || request.getQuestionId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         LambdaQueryWrapper<QuestionSubmit> questionSubmitLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        questionSubmitLambdaQueryWrapper.eq(QuestionSubmit::getUserId,userId).eq(QuestionSubmit::getQuestionId,questionId).orderByDesc(QuestionSubmit::getCreateTime);
-
-        List<QuestionSubmit> list = questionSubmitService.list(questionSubmitLambdaQueryWrapper);
-        QuestionSubmit questionSubmit = list.get(0);
+        questionSubmitLambdaQueryWrapper.eq(QuestionSubmit::getUserId, request.getUserId()).eq(QuestionSubmit::getQuestionId, request.getQuestionId()).orderByDesc(QuestionSubmit::getCreateTime);
+        QuestionSubmit historyQuestionSubmit = null;
+        if (request.getSubmitId() != -1) {
+            questionSubmitLambdaQueryWrapper.eq(QuestionSubmit::getQuestionId, request.getSubmitId());
+            historyQuestionSubmit = questionSubmitService.getById(request.getSubmitId());
+        }
+        QuestionSubmit questionSubmit = null;
+        if (historyQuestionSubmit != null) {
+            questionSubmit = historyQuestionSubmit;
+        } else {
+            List<QuestionSubmit> list = questionSubmitService.list(questionSubmitLambdaQueryWrapper);
+            questionSubmit = list.get(0);
+        }
         if (questionSubmit == null) {
             throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
         }
         return ResultUtils.success((questionSubmit));
     }
-
 
 }
